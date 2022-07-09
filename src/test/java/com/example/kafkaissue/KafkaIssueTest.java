@@ -86,9 +86,14 @@ class KafkaIssueTest {
 			containerFactory.setBatchListener(true);
 
 			final var backoff = new FixedBackOff(250, Long.MAX_VALUE); // may need to reduce the backoff if not failing
+
 			final var errorHandler = new RetryingBatchErrorHandler(backoff, (ignore1, ignore2) -> {
 				throw new RuntimeException("boo");
 			});
+
+			// will work if replaced with SeekToCurrentBatchErrorHandler
+//			final var errorHandler = new SeekToCurrentBatchErrorHandler();
+//			errorHandler.setBackOff(backoff);
 			containerFactory.setBatchErrorHandler(errorHandler);
 			return containerFactory;
 		}
