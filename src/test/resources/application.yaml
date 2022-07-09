@@ -1,0 +1,15 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${spring.embedded.kafka.brokers}
+    consumer:
+      max-poll-records: 1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      bootstrap-servers: ${spring.embedded.kafka.brokers}
+
+logging:
+  level:
+    org.springframework: info
+    com.example: info
+    root: warn
