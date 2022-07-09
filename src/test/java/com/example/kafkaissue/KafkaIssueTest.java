@@ -85,7 +85,7 @@ class KafkaIssueTest {
 			containerFactory.setConsumerFactory(consumerFactory);
 			containerFactory.setBatchListener(true);
 
-			final var backoff = new FixedBackOff(250, Long.MAX_VALUE);
+			final var backoff = new FixedBackOff(250, Long.MAX_VALUE); // may need to reduce the backoff if not failing
 			final var errorHandler = new RetryingBatchErrorHandler(backoff, (ignore1, ignore2) -> {
 				throw new RuntimeException("boo");
 			});
@@ -105,6 +105,7 @@ class KafkaIssueTest {
 
 		Thread.sleep(1000);
 
+		// create second consumer to force rebalancing
 		final var consumer = createConsumer();
 		consumer.subscribe(List.of(TOPIC));
 
